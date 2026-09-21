@@ -57,7 +57,6 @@ API_KEY = st.secrets.get(
         "AQ.Ab8RN6KtsISk3rZk-7-3eTNfxIMRtXGmCunOnjU6VZgMbMbdUg",
     ),
 )
-```[cite: 6]
 
 # ---------------------------------------------------------
 # 2. SCHEMA PYDANTIC DATA
