@@ -55,11 +55,11 @@ st.markdown(
 )
 
 # API KEY GEMINI & INISIALISASI CLIENT
-API_KEY = st.secrets.get(
-    "GEMINI_API_KEY",
-    os.getenv(
-        "GEMINI_API_KEY",
-        "AQ.Ab8RN6KtsISk3rZk-7-3eTNfxlMRtXGmCunOnjU6VZgMbMbdUg",
+import streamlit as st
+from google import genai
+
+# Ambil API key murni dari Streamlit Secrets
+client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
     ),
 )
 
