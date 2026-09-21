@@ -50,8 +50,14 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # API KEY GEMINI
-API_KEY = "AQ.Ab8RN6J33ouiKOPuEHDKv9_uKoPEbio8JfFwCV_l-HNb-l1pUg"
-client = genai.Client(api_key=API_KEY)
+API_KEY = st.secrets.get(
+    "GEMINI_API_KEY",
+    os.getenv(
+        "GEMINI_API_KEY",
+        "AQ.Ab8RN6KtsISk3rZk-7-3eTNfxIMRtXGmCunOnjU6VZgMbMbdUg",
+    ),
+)
+```[cite: 6]
 
 # ---------------------------------------------------------
 # 2. SCHEMA PYDANTIC DATA
