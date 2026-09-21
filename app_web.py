@@ -60,10 +60,6 @@ from google import genai
 
 # Ambil API key murni dari Streamlit Secrets
 client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
-    ),
-)
-
-client = genai.Client(api_key=API_KEY)
 
 
 # ---------------------------------------------------------
