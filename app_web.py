@@ -94,7 +94,7 @@ class PerangkatAjarSalaf(BaseModel):
 # ---------------------------------------------------------
 # 3. FUNGSI GENERATE AI (GEMINI)
 # ---------------------------------------------------------
-def generate_ai(nama_kitab: str) -> PerangkatAjarSalaf:
+def generate_ai(nama_kitab: str) -> PerangkatAjarRufidz:
   system_prompt = (
       "Kamu adalah pakar kurikulum pesantren salaf tradisional Indonesia. "
       "Tugasmu menyusun Perangkat Ajar (Silabus & RPP) berbasis nama kitab"
@@ -108,7 +108,7 @@ def generate_ai(nama_kitab: str) -> PerangkatAjarSalaf:
   for attempt in range(1, max_retries + 1):
     try:
       response = client.models.generate_content(
-          model="gemini-1.5-flash",
+          model="gemini-3.6-flash",
           contents=f"Buatkan silabus dan RPP lengkap untuk kitab: {nama_kitab}",
           config=types.GenerateContentConfig(
               system_instruction=system_prompt,
@@ -129,7 +129,7 @@ def generate_ai(nama_kitab: str) -> PerangkatAjarSalaf:
 # ---------------------------------------------------------
 # 4. FUNGSI EKSPOR KE WORD (BYTES)
 # ---------------------------------------------------------
-def create_docx_bytes(data: PerangkatAjarSalaf) -> BytesIO:
+def create_docx_bytes(data: PerangkatAjarRufidz) -> BytesIO:
   doc = docx.Document()
   PRIMARY_RGB = RGBColor(10, 92, 54)
 
@@ -144,7 +144,7 @@ def create_docx_bytes(data: PerangkatAjarSalaf) -> BytesIO:
   r_brand.font.color.rgb = PRIMARY_RGB
 
   r_sub = p_kop.add_run(
-      "Sistem Kurikulum & Administrasi Pembelajaran Pesantren Salaf /"
+      "Sistem Kurikulum & Administrasi Pembelajaran Rufidz /"
       " Diniyah\n"
   )
   r_sub.font.size = Pt(10)
@@ -206,8 +206,8 @@ st.markdown(
     unsafe_allow_html=True,
 )
 st.markdown(
-    "<p class='sub-title'>Generator Silabus & RPP Otomatis untuk Pesantren"
-    " Salaf & Madrasah Diniyah</p>",
+    "<p class='sub-title'>Generator Silabus & RPP Otomatis untuk Rufidz"
+    " Tahfidz & Diniyah</p>",
     unsafe_allow_html=True,
 )
 
@@ -217,12 +217,14 @@ preset_kitab = st.sidebar.selectbox(
     "Pilih Kitab Populer:",
     [
         "-- Pilih atau Ketik Manual --",
-        "Safinatun Najah",
+        "Al-Ushul Ats-Tsalatsah",
         "Matan Al-Jurumiyah",
-        "Ta'lim Muta'allim",
-        "Fathul Qarib",
-        "Aqidatul Awam",
-        "Taisirul Khollaq",
+        "Tuhfah Saniyyah",
+        "Al-Qawa’idun Nahwiyyah",
+        "Qawa’id Arba’",
+        "Laamiyyah",
+        "Ushulun Fit Tafsir",
+        "Al-Khuluqul Hasan",
     ],
 )
 
@@ -231,9 +233,9 @@ default_val = (
     "" if preset_kitab == "-- Pilih atau Ketik Manual --" else preset_kitab
 )
 nama_kitab_input = st.text_input(
-    "Nama Kitab Salaf:",
+    "Nama Kitab:",
     value=default_val,
-    placeholder="Contoh: Safinatun Najah / Jurumiyah",
+    placeholder="Contoh: Qawa’id Arba’ / Jurumiyah",
 )
 
 # Tombol Generate
@@ -275,7 +277,7 @@ if "data_result" in st.session_state:
           "Pertemuan": s.pertemuan_ke,
           "Bab / Fasal": s.bab_fasal,
           "Perkiraan Hal.": s.perkiraan_halaman,
-          "Metode Salaf": s.metode,
+          "Metode": s.metode,
           "Capaian Santri": s.capaian_indikator,
       })
     st.dataframe(table_data, use_container_width=True)
@@ -284,8 +286,8 @@ if "data_result" in st.session_state:
     rpp = data.sample_rpp_pertemuan_1
     st.markdown(f"**Target Bacaan:** {rpp.target_bacaan}")
     st.markdown(f"**Pembukaan:** {rpp.langkah_pembukaan}")
-    st.markdown(f"**Langkah Inti (Bandongan/Pepeg):** {rpp.langkah_inti}")
-    st.markdown(f"**Penutup & Sorogan:** {rpp.langkah_penutup}")
+    st.markdown(f"**Langkah Inti (Ceramah Interaktif/Hafalan (Tikrar / Muroja'ah)/Praktek Langsung):** {rpp.langkah_inti}")
+    st.markdown(f"**Penutup:** {rpp.langkah_penutup}")
 
   st.divider()
 
