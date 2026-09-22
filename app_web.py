@@ -28,7 +28,11 @@ st.set_page_config(
 # Custom CSS Tampilan Pesantren
 st.markdown(
     """
+    header {visibility: hidden;}
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
     <style>
+    
     .main-title {
         color: #0A5C36;
         text-align: center;
