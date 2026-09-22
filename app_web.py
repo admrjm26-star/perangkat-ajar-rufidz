@@ -25,14 +25,17 @@ st.set_page_config(
     layout="wide",
 )
 
-# Custom CSS Tampilan Pesantren
+# Custom CSS Tampilan Pesantren & Menyembunyikan Header/GitHub
 st.markdown(
     """
+    <style>
+    /* Sembunyikan Header, Menu, Footer & Toolbar Streamlit Cloud */
     header {visibility: hidden;}
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    <style>
-    
+    [data-testid="stHeader"] {display: none;}
+    [data-testid="stToolbar"] {display: none;}
+
     .main-title {
         color: #0A5C36;
         text-align: center;
@@ -54,7 +57,7 @@ st.markdown(
         width: 100%;
     }
     </style>
-""",
+    """,
     unsafe_allow_html=True,
 )
 
@@ -211,7 +214,7 @@ st.markdown(
 )
 st.markdown(
     "<p class='sub-title'>Generator Silabus & RPP Otomatis untuk Rufidz"
-    " Tahfidz & Diniyah</p>",
+    " -Tahfidz & Diniyah</p>",
     unsafe_allow_html=True,
 )
 
