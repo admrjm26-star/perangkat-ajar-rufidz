@@ -109,7 +109,7 @@ class PerangkatAjarRufidz(BaseModel):
 # ---------------------------------------------------------
 # 3. FUNGSI GENERATE AI (GEMINI)
 # ---------------------------------------------------------
-def generate_ai(nama_kitab: str) -> PerangkatAjarRufidz:
+def generate_ai(nama_kitab: str, tingkat_kelas: str) -> PerangkatAjarRufidz:
     system_prompt = (
         "Kamu adalah pakar kurikulum lembaga Rufidz Tahfidz & Diniyah Indonesia. "
         "Tugasmu menyusun Perangkat Ajar (Silabus & RPP 1 Lembar) berbasis nama kitab/pelajaran. "
@@ -118,6 +118,7 @@ def generate_ai(nama_kitab: str) -> PerangkatAjarRufidz:
         "Gunakan METODE PEMBELAJARAN KLASIK / KLASIKAL yang umum (seperti Ceramah Interaktif, "
         "Tanya Jawab, Diskusi, Demonstrasi, Drill/Latihan, Muroja'ah, dan Penugasan). "
         "Jangan menggunakan istilah Sorogan atau Bandongan. "
+        f"PENTING: Tingkat/Kelas HARUS disesuaikan secara presisi dengan pilihan user: '{tingkat_kelas}'. "
         "Pastikan output STRICT mengikuti skema JSON."
     )
 
@@ -126,7 +127,7 @@ def generate_ai(nama_kitab: str) -> PerangkatAjarRufidz:
         try:
             response = client.models.generate_content(
                 model="gemini-3.6-flash",
-                contents=f"Buatkan silabus dan RPP 1 Lembar lengkap untuk kitab/materi: {nama_kitab}",
+                contents=f"Buatkan silabus dan RPP 1 Lembar lengkap untuk kitab/materi: {nama_kitab} khusus untuk tingkat/kelas: {tingkat_kelas}",
                 config=types.GenerateContentConfig(
                     system_instruction=system_prompt,
                     response_mime_type="application/json",
@@ -175,7 +176,7 @@ def create_docx_bytes(data: PerangkatAjarRufidz) -> BytesIO:
     p_id = doc.add_paragraph()
     p_id.add_run(f"Nama Kitab/Pelajaran: {data.nama_kitab}\n").bold = True
     p_id.add_run(f"Fan Ilmu: {data.fan_ilmu}\n")
-    p_id.add_run(f"Tingkat: {data.tingkat_rekomendasi}\n")
+    p_id.add_run(f"Tingkat / Kelas: {data.tingkat_rekomendasi}\n")
     p_id.add_run(f"Total Pertemuan: {data.total_pertemuan} Pertemuan")
 
     # Tabel Silabus
@@ -286,15 +287,24 @@ preset_kitab = st.sidebar.selectbox(
     ],
 )
 
-# Input Nama Kitab
-default_val = (
-    "" if preset_kitab == "-- Pilih atau Ketik Manual --" else preset_kitab
-)
-nama_kitab_input = st.text_input(
-    "Nama Kitab / Pelajaran:",
-    value=default_val,
-    placeholder="Contoh: Qawa’id Arba’ / Jurumiyah",
-)
+# Input Nama Kitab & Pilih Tingkat/Kelas
+col_input1, col_input2 = st.columns([2, 1])
+
+with col_input1:
+    default_val = (
+        "" if preset_kitab == "-- Pilih atau Ketik Manual --" else preset_kitab
+    )
+    nama_kitab_input = st.text_input(
+        "Nama Kitab / Pelajaran:",
+        value=default_val,
+        placeholder="Contoh: Qawa’id Arba’ / Jurumiyah",
+    )
+
+with col_input2:
+    tingkat_kelas_input = st.selectbox(
+        "Pilih Tingkat / Kelas:",
+        ["Kelas 7", "Kelas 8", "Kelas 9", "KPM Pro"],
+    )
 
 # Tombol Generate
 if st.button("🚀 Generate Silabus & RPP Otomatis"):
@@ -302,11 +312,11 @@ if st.button("🚀 Generate Silabus & RPP Otomatis"):
         st.warning("Silakan masukkan atau pilih nama kitab/pelajaran terlebih dahulu!")
     else:
         with st.spinner(
-            f"Sedang mengunci bab & menyusun kurikulum untuk '{nama_kitab_input}'..."
+            f"Sedang menyusun kurikulum '{nama_kitab_input}' untuk {tingkat_kelas_input}..."
         ):
             try:
                 # 1. AI Generate
-                result = generate_ai(nama_kitab_input)
+                result = generate_ai(nama_kitab_input, tingkat_kelas_input)
                 st.session_state["data_result"] = result
                 st.success("Berhasil di-generate oleh AI!")
             except Exception as e:
@@ -321,7 +331,7 @@ if "data_result" in st.session_state:
 
     col1, col2, col3 = st.columns(3)
     col1.metric("Fan Ilmu", data.fan_ilmu)
-    col2.metric("Tingkat Santri", data.tingkat_rekomendasi)
+    col2.metric("Tingkat / Kelas", data.tingkat_rekomendasi)
     col3.metric("Total Pertemuan", f"{data.total_pertemuan} Pertemuan")
 
     tab1, tab2 = st.tabs(["📋 Silabus Pembelajaran", "📝 Sample RPP 1 Lembar"])
