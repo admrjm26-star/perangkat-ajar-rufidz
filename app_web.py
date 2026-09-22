@@ -293,7 +293,7 @@ if "data_result" in st.session_state:
     rpp = data.sample_rpp_pertemuan_1
     st.markdown(f"**Target Bacaan:** {rpp.target_bacaan}")
     st.markdown(f"**Pembukaan:** {rpp.langkah_pembukaan}")
-    st.markdown(f"**Langkah Inti (Ceramah Interaktif/Hafalan (Tikrar / Muroja'ah)/Praktek Langsung):** {rpp.langkah_inti}")
+    st.markdown(f"**Langkah Inti (Sorogan/ Bandongan):** {rpp.langkah_inti}")
     st.markdown(f"**Penutup:** {rpp.langkah_penutup}")
 
   st.divider()
