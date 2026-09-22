@@ -108,7 +108,7 @@ def generate_ai(nama_kitab: str) -> PerangkatAjarSalaf:
   for attempt in range(1, max_retries + 1):
     try:
       response = client.models.generate_content(
-          model="gemini-2.5-flash",
+          model="gemini-1.5-flash",
           contents=f"Buatkan silabus dan RPP lengkap untuk kitab: {nama_kitab}",
           config=types.GenerateContentConfig(
               system_instruction=system_prompt,
