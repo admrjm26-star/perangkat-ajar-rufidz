@@ -453,7 +453,7 @@ with col_input1:
 with col_input2:
     tingkat_kelas_input = st.selectbox(
         "Pilih Tingkat / Kelas:",
-        ["Kelas 7", "Kelas 8", "Kelas 9", "KPM Pro"],
+        ["Kelas A", "Kelas B", "Kelas C", "Kelas 7", "Kelas 8", "Kelas 9", "KPM Pro"],
     )
 
 # Tombol Generate
