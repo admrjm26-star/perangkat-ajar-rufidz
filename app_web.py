@@ -222,7 +222,7 @@ def create_rpp_docx_bytes(data: PerangkatAjarRufidz) -> BytesIO:
     p_ttd = doc.add_paragraph()
     p_ttd.add_run("Mengetahui,\n")
     p_ttd.add_run("Kepala Sekolah\t\t\t\tPengampu Mapel\n\n\n\n")
-    p_ttd.add_run("( Ust. Mu'tasim Billah )\t\t\t( Ustadz Pengampu )")
+    p_ttd.add_run("( Mudir Sekolah )\t\t\t( Ustadz Pengampu )")
 
     file_stream = BytesIO()
     doc.save(file_stream)
@@ -400,7 +400,7 @@ def create_full_docx_bytes(data: PerangkatAjarRufidz) -> BytesIO:
     p_ttd = doc.add_paragraph()
     p_ttd.add_run("Mengetahui,\n")
     p_ttd.add_run("Kepala Sekolah\t\t\t\tPengampu Mapel\n\n\n\n")
-    p_ttd.add_run("( Ust. Mu'tasim Billah )\t\t\t( Ustadz Pengampu )")
+    p_ttd.add_run("( Mudir Sekolah )\t\t\t( Ustadz Pengampu )")
 
     file_stream = BytesIO()
     doc.save(file_stream)
